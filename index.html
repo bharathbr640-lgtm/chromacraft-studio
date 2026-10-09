@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ChromaCraft Studio — Senior Frontend Architect Color System & Palette Suite">
+  <title>ChromaCraft Studio | Professional Color Architecture & Design Systems</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='%233B82F6'/></svg>">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark">
+  <!-- Toast Notification System -->
+  <div id="global-toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- App Header -->
+  <header class="app-header" role="banner">
+    <div class="header-brand">
+      <div class="brand-logo-mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke="url(#logo-grad)"/>
+          <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10" fill="url(#logo-grad)" opacity="0.6"/>
+          <defs>
+            <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#3B82F6"/>
+              <stop offset="0.5" stop-color="#8B5CF6"/>
+              <stop offset="1" stop-color="#EC4899"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1 class="brand-title">ChromaCraft <span class="brand-badge">Architect</span></h1>
+        <p class="brand-subtitle">Design System Color & Accessibility Engine</p>
+      </div>
+    </div>
+
+    <!-- Global Top Quick-Bar -->
+    <div class="header-quickbar">
+      <div class="quick-current-display">
+        <div id="selected-color-swatch-badge" class="quick-swatch"></div>
+        <div class="quick-meta">
+          <span id="selected-color-name" class="quick-name">Royal Azure</span>
+          <span id="selected-color-hex" class="quick-hex font-mono">#3B82F6</span>
+        </div>
+      </div>
+
+      <button type="button" id="eyedropper-btn" class="btn btn-icon-label" title="Sample color from screen (Shortcut: E)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m14 7 3 3m-9.5 7.5L3 21l3.5-4.5 8-8a2.12 2.12 0 1 0-3-3l-8 8Z"/>
+          <path d="m14.5 6.5 3 3"/>
+        </svg>
+        <span>Pick Color (E)</span>
+      </button>
+
+      <button type="button" id="download-ase-btn" class="btn btn-accent" title="Download Adobe Swatch Exchange (.ASE) binary file for Figma/Photoshop/Illustrator">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Export .ASE Swatch</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Navigation Tabs -->
+  <nav class="app-navigation" role="navigation" aria-label="Main Toolset Tabs">
+    <div class="nav-container">
+      <button type="button" class="nav-tab-item active" data-target="tab-picker">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a7 7 0 0 0 7 7c0 7-7 13-7 13s-7-6-7-13a7 7 0 0 0 7-7z"/>
+        </svg>
+        <span>Color Studio</span>
+      </button>
+      <button type="button" class="nav-tab-item" data-target="tab-palette">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <span>Harmonies & Palettes</span>
+      </button>
+      <button type="button" class="nav-tab-item" data-target="tab-gradient">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="18" rx="4"/>
+          <path d="M6 15l4-4 4 4 4-4"/>
+        </svg>
+        <span>Gradient Studio</span>
+      </button>
+      <button type="button" class="nav-tab-item" data-target="tab-accessibility">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24"/>
+          <path d="M12 2a10 10 0 0 1 10 10"/>
+        </svg>
+        <span>Accessibility & Vision</span>
+      </button>
+      <button type="button" class="nav-tab-item" data-target="tab-export">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="16 18 22 12 16 6"/>
+          <polyline points="8 6 2 12 8 18"/>
+        </svg>
+        <span>Token Export</span>
+      </button>
+      <button type="button" class="nav-tab-item" data-target="tab-library">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Favorites & Library</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Work Area -->
+  <main class="app-main" role="main">
+
+    <!-- TAB 1: COLOR STUDIO (Selection, Sliders, Formats) -->
+    <section id="tab-picker" class="studio-section active-section">
+      <div id="picker-module" class="module-grid-studio">
+        
+        <!-- Left Column: Visual Wheel & Split Swatch -->
+        <div class="panel studio-panel-visual">
+          <div class="panel-header">
+            <h2 class="panel-title">Visual Chromatic Canvas</h2>
+            <span class="panel-tag">Interactive HSL Disk</span>
+          </div>
+
+          <div class="wheel-interactive-container">
+            <div class="wheel-canvas-wrapper">
+              <canvas id="color-wheel-canvas" width="240" height="240" aria-label="HSL Color Wheel"></canvas>
+            </div>
+          </div>
+
+          <div class="split-swatch-container">
+            <div class="split-swatch-card">
+              <div class="swatch-half checkboard-bg">
+                <div id="current-color-swatch" class="swatch-fill" title="Current Active Color"></div>
+              </div>
+              <div class="swatch-label">Current</div>
+            </div>
+            <div class="split-swatch-card">
+              <div class="swatch-half checkboard-bg">
+                <div id="previous-color-swatch" class="swatch-fill" title="Click to revert to Previous Color"></div>
+              </div>
+              <div class="swatch-label">Previous (Click to Revert)</div>
+            </div>
+          </div>
+
+          <div class="hex-direct-box">
+            <label for="input-hex" class="input-label">HEX Code</label>
+            <div class="input-with-prefix">
+              <span class="prefix">#</span>
+              <input type="text" id="input-hex" class="form-input font-mono" maxlength="9" value="3B82F6" placeholder="RRGGBB">
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Column: Precision Channels & Sliders -->
+        <div class="panel studio-panel-sliders">
+          <div class="panel-header">
+            <h2 class="panel-title">Precision Channels</h2>
+            <span class="panel-tag">32-bit Float Internal</span>
+          </div>
+
+          <fieldset class="slider-group">
+            <legend class="group-title">HSL Color Space</legend>
+            <div class="slider-row">
+              <label for="slider-hue">Hue (H)</label>
+              <input type="range" id="slider-hue" class="range-slider range-hue" min="0" max="360" value="217">
+              <input type="number" id="input-hue" class="num-input font-mono" min="0" max="360" value="217">
+              <span class="unit">°</span>
+            </div>
+            <div class="slider-row">
+              <label for="slider-sat">Saturation (S)</label>
+              <input type="range" id="slider-sat" class="range-slider" min="0" max="100" value="91">
+              <input type="number" id="input-sat" class="num-input font-mono" min="0" max="100" value="91">
+              <span class="unit">%</span>
+            </div>
+            <div class="slider-row">
+              <label for="slider-light">Lightness (L)</label>
+              <input type="range" id="slider-light" class="range-slider" min="0" max="100" value="60">
+              <input type="number" id="input-light" class="num-input font-mono" min="0" max="100" value="60">
+              <span class="unit">%</span>
+            </div>
+          </fieldset>
+
+          <fieldset class="slider-group">
+            <legend class="group-title">RGB Components</legend>
+            <div class="slider-row">
+              <label for="slider-red">Red (R)</label>
+              <input type="range" id="slider-red" class="range-slider range-red" min="0" max="255" value="59">
+              <input type="number" id="input-red" class="num-input font-mono" min="0" max="255" value="59">
+            </div>
+            <div class="slider-row">
+              <label for="slider-green">Green (G)</label>
+              <input type="range" id="slider-green" class="range-slider range-green" min="0" max="255" value="130">
+              <input type="number" id="input-green" class="num-input font-mono" min="0" max="255" value="130">
+            </div>
+            <div class="slider-row">
+              <label for="slider-blue">Blue (B)</label>
+              <input type="range" id="slider-blue" class="range-slider range-blue" min="0" max="255" value="246">
+              <input type="number" id="input-blue" class="num-input font-mono" min="0" max="255" value="246">
+            </div>
+          </fieldset>
+
+          <fieldset class="slider-group">
+            <legend class="group-title">Opacity / Alpha Channel</legend>
+            <div class="slider-row">
+              <label for="slider-alpha">Alpha (A)</label>
+              <input type="range" id="slider-alpha" class="range-slider" min="0" max="100" value="100">
+              <input type="number" id="input-alpha" class="num-input font-mono" min="0" max="100" value="100">
+              <span class="unit">%</span>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Right Column: Bidirectional Format Hub -->
+        <div class="panel studio-panel-formats">
+          <div class="panel-header">
+            <h2 class="panel-title">Format Hub</h2>
+            <span class="panel-tag">1-Click Copy</span>
+          </div>
+          <p class="panel-description">Instant bidirectional conversion for engineering handoffs.</p>
+
+          <div class="format-list">
+            <div class="format-card">
+              <span class="format-label">HEX</span>
+              <input type="text" id="format-hex-val" class="format-input font-mono" readonly value="#3B82F6">
+              <button type="button" class="btn btn-sm" data-copy-format="hex">Copy</button>
+            </div>
+            <div class="format-card">
+              <span class="format-label">RGB</span>
+              <input type="text" id="format-rgb-val" class="format-input font-mono" readonly value="rgb(59, 130, 246)">
+              <button type="button" class="btn btn-sm" data-copy-format="rgb">Copy</button>
+            </div>
+            <div class="format-card">
+              <span class="format-label">RGBA</span>
+              <input type="text" id="format-rgba-val" class="format-input font-mono" readonly value="rgba(59, 130, 246, 1)">
+              <button type="button" class="btn btn-sm" data-copy-format="rgba">Copy</button>
+            </div>
+            <div class="format-card">
+              <span class="format-label">HSL</span>
+              <input type="text" id="format-hsl-val" class="format-input font-mono" readonly value="hsl(217, 91%, 60%)">
+              <button type="button" class="btn btn-sm" data-copy-format="hsl">Copy</button>
+            </div>
+            <div class="format-card">
+              <span class="format-label">HSLA</span>
+              <input type="text" id="format-hsla-val" class="format-input font-mono" readonly value="hsla(217, 91%, 60%, 1)">
+              <button type="button" class="btn btn-sm" data-copy-format="hsla">Copy</button>
+            </div>
+            <div class="format-card">
+              <span class="format-label">CMYK</span>
+              <input type="text" id="format-cmyk-val" class="format-input font-mono" readonly value="cmyk(76%, 47%, 0%, 4%)">
+              <button type="button" class="btn btn-sm" data-copy-format="cmyk">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: HARMONIES & PALETTES -->
+    <section id="tab-palette" class="studio-section">
+      <div id="palette-module" class="module-palette">
+        <div class="palette-top-bar">
+          <div class="harmony-controls">
+            <div class="control-item">
+              <label for="harmony-type-select" class="input-label">Harmony Algorithm</label>
+              <select id="harmony-type-select" class="form-select">
+                <option value="complementary">Complementary (180°)</option>
+                <option value="analogous">Analogous (± Spread)</option>
+                <option value="triadic">Triadic (120°, 240°)</option>
+                <option value="tetradic">Tetradic / Double Complementary (90° / 180°)</option>
+                <option value="split-complementary">Split-Complementary (150°, 210°)</option>
+                <option value="monochromatic">Monochromatic (Luminance Scale)</option>
+              </select>
+            </div>
+
+            <div class="control-item">
+              <label for="harmony-spread-slider" class="input-label">
+                Spread Parameter: <span id="harmony-spread-val" class="font-mono">30°</span>
+              </label>
+              <input type="range" id="harmony-spread-slider" class="range-slider" min="10" max="80" value="30">
+            </div>
+          </div>
+
+          <div class="harmony-visualizer-box">
+            <canvas id="harmony-visualizer-canvas" width="220" height="220" aria-label="Geometric Harmony Visualizer"></canvas>
+          </div>
+        </div>
+
+        <div class="palette-swatches-section">
+          <h3 class="section-subheading">Generated Swatches</h3>
+          <div id="harmony-swatches-grid" class="palette-grid">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: GRADIENT STUDIO -->
+    <section id="tab-gradient" class="studio-section">
+      <div id="gradient-module" class="module-gradient">
+        <div class="gradient-preview-area">
+          <div id="gradient-preview-box" class="gradient-canvas-box"></div>
+        </div>
+
+        <div class="gradient-timeline-panel panel">
+          <div class="timeline-controls-header">
+            <div class="gradient-type-picker">
+              <label class="radio-label">
+                <input type="radio" name="gradient-type" value="linear" checked> Linear
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="gradient-type" value="radial"> Radial
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="gradient-type" value="conic"> Conic
+              </label>
+            </div>
+
+            <div id="gradient-angle-group" class="gradient-angle-box">
+              <label for="gradient-angle-slider" class="input-label">Angle</label>
+              <input type="range" id="gradient-angle-slider" class="range-slider" min="0" max="360" value="90">
+              <input type="number" id="gradient-angle-input" class="num-input font-mono" min="0" max="360" value="90">
+              <span class="unit">°</span>
+            </div>
+          </div>
+
+          <!-- Multi-Stop Track -->
+          <div class="gradient-track-wrapper">
+            <div id="gradient-stop-track" class="gradient-track" title="Click to add stop, drag markers to reposition">
+              <!-- Stop handles rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Active Stop Editor -->
+          <div class="stop-editor-bar">
+            <div class="stop-param">
+              <label for="stop-color-input" class="input-label">Stop Color</label>
+              <input type="color" id="stop-color-input" class="color-swatch-picker" value="#3B82F6">
+            </div>
+
+            <div class="stop-param">
+              <label for="stop-pos-slider" class="input-label">Stop Position</label>
+              <input type="range" id="stop-pos-slider" class="range-slider" min="0" max="100" value="0">
+              <input type="number" id="stop-pos-input" class="num-input font-mono" min="0" max="100" value="0">
+              <span class="unit">%</span>
+            </div>
+
+            <div class="stop-actions">
+              <button type="button" id="stop-use-current-btn" class="btn btn-sm">Use Studio Color</button>
+              <button type="button" id="stop-delete-btn" class="btn btn-sm btn-danger">Delete Stop</button>
+            </div>
+          </div>
+
+          <!-- Presets -->
+          <div class="gradient-presets-bar">
+            <span class="presets-label">Curated Presets:</span>
+            <div id="gradient-presets-container" class="preset-pills">
+              <button type="button" class="preset-pill" data-preset="sunset">Sunset Horizon</button>
+              <button type="button" class="preset-pill" data-preset="aurora">Aurora Borealis</button>
+              <button type="button" class="preset-pill" data-preset="cyberpunk">Cyber Neon</button>
+              <button type="button" class="preset-pill" data-preset="ocean">Deep Ocean</button>
+              <button type="button" class="preset-pill" data-preset="mesh">Pearlescent</button>
+            </div>
+          </div>
+
+          <!-- CSS Output -->
+          <div class="gradient-code-bar">
+            <div class="code-box-header">
+              <span class="code-box-title">Generated CSS Rule</span>
+              <button type="button" id="gradient-copy-css" class="btn btn-sm btn-primary">Copy CSS</button>
+            </div>
+            <pre class="code-output-block"><code id="gradient-css-code" class="font-mono">background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: ACCESSIBILITY & VISION -->
+    <section id="tab-accessibility" class="studio-section">
+      <div id="accessibility-module" class="module-a11y">
+        <div class="a11y-top-grid">
+          
+          <!-- Contrast Scorecard -->
+          <div class="panel a11y-scorecard">
+            <div class="panel-header">
+              <h2 class="panel-title">WCAG 2.1 Contrast Engine</h2>
+              <span class="panel-tag">ISO / W3C Compliant</span>
+            </div>
+
+            <div class="contrast-metrics-row">
+              <div class="metric-card">
+                <span class="metric-title">On White (#FFF)</span>
+                <span id="wcag-ratio-white" class="metric-value font-mono">4.52:1</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-title">On Black (#000)</span>
+                <span id="wcag-ratio-black" class="metric-value font-mono">4.65:1</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-title">Custom Canvas</span>
+                <span id="wcag-ratio-custom" class="metric-value font-mono">4.52:1</span>
+                <div class="custom-bg-picker-wrap">
+                  <label for="wcag-custom-bg-input" class="sr-only">Custom background</label>
+                  <input type="color" id="wcag-custom-bg-input" value="#FFFFFF" title="Choose custom comparison background">
+                </div>
+              </div>
+            </div>
+
+            <div class="compliance-badges-grid">
+              <div class="badge-item">
+                <span class="badge-label">AA Normal Text (4.5:1)</span>
+                <span id="badge-aa-normal" class="a11y-badge a11y-pass">PASS</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-label">AA Large Text (3.0:1)</span>
+                <span id="badge-aa-large" class="a11y-badge a11y-pass">PASS</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-label">AAA Normal Text (7.0:1)</span>
+                <span id="badge-aaa-normal" class="a11y-badge a11y-fail">FAIL</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-label">AAA Large Text (4.5:1)</span>
+                <span id="badge-aaa-large" class="a11y-badge a11y-pass">PASS</span>
+              </div>
+              <div class="badge-item">
+                <span class="badge-label">UI Components (3.0:1)</span>
+                <span id="badge-ui-comp" class="a11y-badge a11y-pass">PASS</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typography Specimen -->
+          <div class="panel a11y-specimen">
+            <div class="panel-header">
+              <h2 class="panel-title">Component Specimen</h2>
+              <button type="button" id="a11y-toggle-mode-btn" class="btn btn-xs">Mode: Color as Text</button>
+            </div>
+
+            <div id="accessibility-preview-card" class="specimen-container">
+              <h3 class="specimen-h1">The quick brown fox jumps over the lazy dog</h3>
+              <p class="specimen-body">
+                Accessible color architecture ensures perceptual readability and functional legibility across every screen resolution and ambient condition.
+              </p>
+              <div class="specimen-components">
+                <button type="button" class="btn preview-action-btn">Primary Action</button>
+                <span class="specimen-caption font-mono">12px Caption Text • Subtitle token</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Colorblindness Simulator -->
+        <div class="panel colorblind-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Colorblindness Simulation (Machado / Brettel LMS Matrix)</h2>
+            <span class="panel-tag">Dichromacy & Anomalous Trichromacy</span>
+          </div>
+          <div id="colorblind-simulation-grid" class="colorblind-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: TOKEN EXPORT -->
+    <section id="tab-export" class="studio-section">
+      <div id="export-module" class="module-export panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Design System Handoff & Code Generator</h2>
+          <div class="export-quick-downloads">
+            <button type="button" id="download-svg-btn" class="btn btn-sm">Download SVG Swatch Sheet</button>
+          </div>
+        </div>
+
+        <div class="export-tabs-bar">
+          <button type="button" class="export-tab-btn active" data-format="css">CSS Variables</button>
+          <button type="button" class="export-tab-btn" data-format="scss">SCSS Map</button>
+          <button type="button" class="export-tab-btn" data-format="tailwind">Tailwind Config</button>
+          <button type="button" class="export-tab-btn" data-format="tokens">W3C Design Tokens (JSON)</button>
+        </div>
+
+        <div class="code-box-wrapper">
+          <div class="code-box-header">
+            <span class="code-box-title">Generated Snippet</span>
+            <div class="code-box-actions">
+              <button type="button" id="export-copy-btn" class="btn btn-sm btn-primary">Copy Code</button>
+              <button type="button" id="export-download-btn" class="btn btn-sm">Download File</button>
+            </div>
+          </div>
+          <pre class="code-output-block"><code id="export-code-output" class="font-mono"></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: FAVORITES & LIBRARY -->
+    <section id="tab-library" class="studio-section">
+      <div id="library-module" class="module-library panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Color Library & Project Collections</h2>
+          <div class="library-header-actions">
+            <button type="button" id="library-export-json" class="btn btn-sm">Export Library JSON</button>
+            <button type="button" id="library-import-json-btn" class="btn btn-sm">Import JSON</button>
+            <input type="file" id="library-import-json-input" accept=".json" style="display: none;">
+          </div>
+        </div>
+
+        <div class="library-toolbar">
+          <div class="library-collection-picker">
+            <label for="library-collection-select" class="input-label">Current Collection</label>
+            <select id="library-collection-select" class="form-select">
+              <!-- Rendered dynamically -->
+            </select>
+            <button type="button" id="library-new-collection-btn" class="btn btn-sm">+ New Collection</button>
+          </div>
+
+          <div class="library-save-bar">
+            <input type="text" id="library-custom-name-input" class="form-input" placeholder="Custom Token Name (e.g., Primary Accent)">
+            <button type="button" id="library-save-current-btn" class="btn btn-primary">Save Active Color</button>
+          </div>
+        </div>
+
+        <div id="library-swatches-list" class="library-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Load Vanilla Modules -->
+  <script src="js/core.js"></script>
+  <script src="js/picker.js"></script>
+  <script src="js/palette.js"></script>
+  <script src="js/gradient.js"></script>
+  <script src="js/accessibility.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

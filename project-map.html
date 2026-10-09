@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Map: ChromaCraft Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0B0F19;
+            --bg-surface: #111827;
+            --bg-card: #1F2937;
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --brand: #3B82F6;
+            --accent: #8B5CF6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --border: #1F293D;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, #111827, #0B0F19);
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(135deg, var(--brand), var(--accent), #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--brand);
+            border-radius: 2px;
+        }
+
+        /* Architecture Visualization */
+        .arch-viz {
+            position: relative;
+            background: var(--bg-surface);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 60px 40px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .comp-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .comp-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--brand);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .comp-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .comp-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .core-engine {
+            grid-column: 2;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            border: 2px solid var(--brand);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .canvas-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Execution Flow */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--bg-surface);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            border-color: var(--accent);
+            background: #161d2d;
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: var(--brand);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .step-detail {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .step-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #38BDF8;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* File Tree */
+        .file-tree {
+            background: var(--bg-surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tree-item {
+            margin-left: 20px;
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .tree-dir {
+            font-weight: 600;
+            color: var(--brand);
+        }
+
+        .tree-file {
+            color: var(--text-secondary);
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .tag-confirmed {
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        @media (max-width: 800px) {
+            .component-grid {
+                grid-template-columns: 1fr;
+            }
+            .core-engine {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>ChromaCraft Studio</h1>
+    <p class="subtitle">A professional-grade color architecture and accessibility engine for high-fidelity design systems.</p>
+</header>
+
+<div class="main-container">
+    <section>
+        <div class="section-title">High-Level Architecture</div>
+        <div class="arch-viz">
+            <canvas id="arch-canvas" class="canvas-layer"></canvas>
+            <div class="component-grid">
+                <div class="comp-card" data-target="picker">
+                    <h3>Color Picker</h3>
+                    <p>Interactive HSL wheel and precision channels for color selection.</p>
+                </div>
+                <div class="comp-card core-engine" data-target="core">
+                    <h3>ColorCore Engine</h3>
+                    <p>Central Brain: State management & mathematical color conversions.</p>
+                </div>
+                <div class="comp-card" data-target="palette">
+                    <h3>Harmony Engine</h3>
+                    <p>Generates geometric palettes (Triadic, Analogous, etc.).</p>
+                </div>
+                <div class="comp-card" data-target="gradient">
+                    <h3>Gradient Studio</h3>
+                    <p>Multi-stop linear, radial, and conic gradient creator.</p>
+                </div>
+                <div class="comp-card" data-target="accessibility">
+                    <h3>A11y Suite</h3>
+                    <p>WCAG 2.1 Contrast engine and vision simulation.</p>
+                </div>
+                <div class="comp-card" data-target="export">
+                    <h3>Token Export</h3>
+                    <p>Generates CSS, SCSS, Tailwind, and binary .ASE files.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">Real Execution Flow: Color Selection</div>
+        <div class="flow-container">
+            <div class="flow-step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">User Interaction</div>
+                    <div class="step-detail">User clicks the HSL Wheel <span class="step-code">picker.js: handleWheelPointer</span></div>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">State Update</div>
+                    <div class="step-detail">Core updates RGB and derived values <span class="step-code">core.js: ColorStore.setFromHsl</span></div>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">Reactive Dispatch</div>
+                    <div class="step-detail">All components redraw based on new state <span class="step-code">core.js: _notify</span></div>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <div class="step-title">Visual Feedback</div>
+                    <div class="step-detail">UI updates swatches, contrast ratios, and export code in real-time.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">Project Structure</div>
+        <div class="file-tree">
+            <div class="tree-item tree-dir">📂 root</div>
+            <div class="tree-item tree-file">└─ index.html <span class="tag">Entry</span></div>
+            <div class="tree-item tree-file">└─ style.css <span class="tag">Styling</span></div>
+            <div class="tree-item tree-dir">└─ 📂 js</div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ core.js <span class="tag tag-confirmed">CONFIRMED: State & Math</span></div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ app.js <span class="tag">Orchestrator</span></div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ picker.js <span class="tag tag-confirmed">CONFIRMED: HSL Wheel</span></div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ palette.js <span class="tag tag-confirmed">CONFIRMED: Harmonies</span></div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ gradient.js <span class="tag">Gradients</span></div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ accessibility.js <span class="tag tag-confirmed">CONFIRMED: WCAG</span></div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ export.js <span class="tag tag-confirmed">CONFIRMED: .ASE Binary</span></div>
+            <div class="tree-item tree-file" style="margin-left: 40px;">└─ storage.js <span class="tag tag-confirmed">CONFIRMED: LocalStorage</span></div>
+        </div>
+    </section>
+</div>
+
+<script>
+    const canvas = document.getElementById('arch-canvas');
+    const ctx = canvas.getContext('2d');
+    const cards = document.querySelectorAll('.comp-card');
+    
+    function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        drawConnections();
+    }
+
+    function drawConnections() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const coreCard = document.querySelector('.core-engine');
+        const coreRect = coreCard.getBoundingClientRect();
+        const canvasRect = canvas.getBoundingClientRect();
+
+        const centerX = coreRect.left + coreRect.width / 2 - canvasRect.left;
+        const centerY = coreRect.top + coreRect.height / 2 - canvasRect.top;
+
+        cards.forEach(card => {
+            if (card === coreCard) return;
+            const rect = card.getBoundingClientRect();
+            const x = rect.left + rect.width / 2 - canvasRect.left;
+            const y = rect.top + rect.height / 2 - canvasRect.top;
+
+            // Draw connection line
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = 'rgba(59, 130, 246, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw animated particle
+            const time = Date.now() * 0.002;
+            const t = (Math.sin(time) + 1) / 2;
+            const px = centerX + (x - centerX) * t;
+            const py = centerY + (y - centerY) * t;
+
+            ctx.beginPath();
+            ctx.arc(px, py, 3, 0, Math.PI * 2);
+            ctx.fillStyle = '#3B82F6';
+            ctx.fill();
+        });
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    setInterval(drawConnections, 16);
+</script>
+
+</body>
+</html>
